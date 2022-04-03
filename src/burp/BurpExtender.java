@@ -18,7 +18,7 @@ public class BurpExtender implements IBurpExtender {
         new Utilities(callbacks);
         callbacks.setExtensionName(name);
 
-        Correlator collab = new Correlator();
+        //Correlator collab = new Correlator();
 
         Monitor collabMonitor = new Monitor(collab);
         new Thread(collabMonitor).start();
@@ -29,7 +29,7 @@ public class BurpExtender implements IBurpExtender {
         Utilities.out("Loaded " + name + " v" + version);
     }
 }
-
+/*
 class Monitor implements Runnable, IExtensionStateListener {
     private Correlator collab;
     private boolean stop = false;
@@ -129,7 +129,7 @@ class Monitor implements Runnable, IExtensionStateListener {
     }
 
 }
-
+*/
 class MetaRequest {
     private IHttpRequestResponse request;
     private int burpId;
@@ -157,7 +157,7 @@ class MetaRequest {
         return timestamp;
     }
 }
-
+/*
 class Correlator {
 
     private IBurpCollaboratorClientContext collab;
@@ -234,17 +234,17 @@ class Correlator {
         return idToType.get(collabid);
     }
 }
-
+*/
 class Injector implements IProxyListener {
 
-    private Correlator collab;
+    private String collab = "collab-server";
     HashSet<String[]> injectionPoints = new HashSet<>();
 
 
-    Injector(Correlator collab) {
-        this.collab = collab;
+    Injector() {
+        //this.collab = collab;
 
-        Scanner s = new Scanner(getClass().getResourceAsStream("/injections"));
+        //Scanner s = new Scanner(getClass().getResourceAsStream("/injections"));
         while (s.hasNextLine()) {
             String injection = s.nextLine();
             if (injection.charAt(0) == '#') {
@@ -264,7 +264,7 @@ class Injector implements IProxyListener {
         request = Utilities.addOrReplaceHeader(request, "Cache-Control", "no-transform");
 
         for (String[] injection: injectionPoints) {
-            String payload = injection[2].replace("%s", collab.generateCollabId(requestCode, injection[1]));
+            String payload = injection[2].replace("%s", collab);
 	    // replace %h with corresponding Host header (same as with %s for Collaborator)
 	    payload = payload.replace("%h", Utilities.getHeader(request, "Host"));
             switch ( injection[0] ){
