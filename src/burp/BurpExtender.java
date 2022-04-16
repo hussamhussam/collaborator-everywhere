@@ -107,7 +107,6 @@ class Injector implements IProxyListener {
 
         return request;
     }
-    public normalize(String url,String method){}
 
     @Override
     public void processProxyMessage(boolean messageIsRequest, IInterceptedProxyMessage proxyMessage) {
