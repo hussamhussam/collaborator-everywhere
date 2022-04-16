@@ -134,7 +134,7 @@ class Injector implements IProxyListener {
         //MetaRequest req = new MetaRequest(proxyMessage);
         //Integer requestCode = collab.addRequest(req);
 
-        messageInfo.setRequest(injectPayloads(reqinfo.getUrl().split("://")[1].split("\\?")[0].replaceAll("/$", "").replaceAll("/","-"),messageInfo.getRequest()));//, requestCode));
+        messageInfo.setRequest(injectPayloads(reqinfo.getUrl().toString().split("://")[1].split("\\?")[0].replaceAll("/$", "").replaceAll("/","-"),messageInfo.getRequest()));//, requestCode));
 
 
     }
