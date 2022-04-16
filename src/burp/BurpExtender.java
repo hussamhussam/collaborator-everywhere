@@ -20,11 +20,11 @@ public class BurpExtender implements IBurpExtender {
 
         //Correlator collab = new Correlator();
 
-        Monitor collabMonitor = new Monitor(collab);
-        new Thread(collabMonitor).start();
-        callbacks.registerExtensionStateListener(collabMonitor);
+        //Monitor collabMonitor = new Monitor(collab);
+        //new Thread(collabMonitor).start();
+        //callbacks.registerExtensionStateListener(collabMonitor);
 
-        callbacks.registerProxyListener(new Injector(collab));
+        callbacks.registerProxyListener(new Injector());
 
         Utilities.out("Loaded " + name + " v" + version);
     }
