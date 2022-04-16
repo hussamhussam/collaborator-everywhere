@@ -59,7 +59,7 @@ class MetaRequest {
 
 class Injector implements IProxyListener {
 
-    private String collab = "425a2logssrf.22timer.ga";
+    private String collab = "4your-server";
     HashSet<String[]> injectionPoints = new HashSet<>();
 
 
