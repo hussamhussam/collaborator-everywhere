@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BurpExtender implements IBurpExtender {
-    private static final String name = "Collaborator Everywhere";
+    private static final String name = "Interactsh Everywhere";
     private static final String version = "1.3";
 
     // provides potentially useful info but increases memory usage
@@ -59,7 +59,7 @@ class MetaRequest {
 
 class Injector implements IProxyListener {
 
-    private String collab = "collab-server";
+    private String collab = "425a2logssrf.22timer.ga";
     HashSet<String[]> injectionPoints = new HashSet<>();
 
 
