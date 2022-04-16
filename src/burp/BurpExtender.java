@@ -66,7 +66,7 @@ class Injector implements IProxyListener {
     Injector() {
         //this.collab = collab;
 
-        //Scanner s = new Scanner(getClass().getResourceAsStream("/injections"));
+        Scanner s = new Scanner(getClass().getResourceAsStream("/injections"));
         while (s.hasNextLine()) {
             String injection = s.nextLine();
             if (injection.charAt(0) == '#') {
@@ -78,7 +78,7 @@ class Injector implements IProxyListener {
 
     }
 
-    public byte[] injectPayloads(byte[] request, Integer requestCode) {
+    public byte[] injectPayloads(String normurl,byte[] request){//, Integer requestCode) {
 
         //request = Utilities.replaceRequestLine(request, "GET @"+collabId + "/"+collabId.split("[.]")[0] + " HTTP/1.1");
         //request = Utilities.addOrReplaceHeader(request, "Referer", "http://portswigger-labs.net/redirect.php?url=https://portswigger-labs.net/"+collabId);
@@ -86,7 +86,7 @@ class Injector implements IProxyListener {
         request = Utilities.addOrReplaceHeader(request, "Cache-Control", "no-transform");
 
         for (String[] injection: injectionPoints) {
-            String payload = injection[2].replace("%s", collab);
+            String payload = injection[2].replace("%s", normurl+"."+collab);
 	    // replace %h with corresponding Host header (same as with %s for Collaborator)
 	    payload = payload.replace("%h", Utilities.getHeader(request, "Host"));
             switch ( injection[0] ){
@@ -107,13 +107,14 @@ class Injector implements IProxyListener {
 
         return request;
     }
+    public normalize(String url,String method){}
 
     @Override
     public void processProxyMessage(boolean messageIsRequest, IInterceptedProxyMessage proxyMessage) {
         if (!messageIsRequest) {
-            if (BurpExtender.SAVE_RESPONSES) {
-                collab.updateResponse(proxyMessage.getMessageReference(), proxyMessage.getMessageInfo());
-            }
+            //if (BurpExtender.SAVE_RESPONSES) {
+            //    collab.updateResponse(proxyMessage.getMessageReference(), proxyMessage.getMessageInfo());
+            //}
             return;
         }
 
@@ -127,14 +128,14 @@ class Injector implements IProxyListener {
 	}
 
         // don't tamper with requests already heading to the collaborator
-        if (messageInfo.getHttpService().getHost().endsWith(collab.getLocation())) {
+        if (messageInfo.getHttpService().getHost().endsWith(collab)) {
             return;
         }
 
-        MetaRequest req = new MetaRequest(proxyMessage);
-        Integer requestCode = collab.addRequest(req);
+        //MetaRequest req = new MetaRequest(proxyMessage);
+        //Integer requestCode = collab.addRequest(req);
 
-        messageInfo.setRequest(injectPayloads(messageInfo.getRequest(), requestCode));
+        messageInfo.setRequest(injectPayloads(reqinfo.getUrl().split("://")[1].split("\\?")[0].replaceAll("/$", "").replaceAll("/","-"),messageInfo.getRequest()));//, requestCode));
 
 
     }
